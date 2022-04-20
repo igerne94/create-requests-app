@@ -1,17 +1,23 @@
 const Post = require('../models/post');
 
+// V.1. exports.getPosts = (req, res) => {
+//     res.json({
+//         posts: [{ title: 'First post' }, { title: 'Second post' }] // hardcoded
+//     });
+// };
+
+// V.2. get posts from the DB; use Post module
 exports.getPosts = (req, res) => {
-    // res.send("Hello world from node js");
-    res.json({
-        posts: [
-            {
-                title: 'First post'
-            },
-            {
-                title: 'Second post'
-            }
-        ]
-    });
+    // const posts = Post.find() //! .find() to find everything in the POST
+    const posts = Post.find().select("_id title body") //! specifies exact fields 
+    .then( (posts) => {
+        // .json with posts (first arg) - is a response with posts from DB:
+                                // K    V
+        // res.status(200).json({posts: posts}) //! since success allways 200, no need to check status(200)
+        // res.json({ posts: posts }) //! can use only value:
+        res.json({ posts })
+    })
+    .catch(err => console.log(err));
 };
 
 // this is the method creates post
@@ -28,7 +34,8 @@ exports.createPost = (req, res) => {
         //? res.status(200).json({ post: result });
     //? });
     post.save().then(result => {
-        res.status(200).json({
+        // res.status(200).json({
+        res.json({ // since success allways 200, no need to check status(200)
             post: result
         });
     })
