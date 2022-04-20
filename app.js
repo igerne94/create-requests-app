@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const morgan = require("morgan");
 // const bodyParser = require('body-parser');
 // load env variables
+const expressValidator = require('express-validator');
 const dotenv = require('dotenv');
 dotenv.config()
 
@@ -40,6 +41,8 @@ app.use(express.urlencoded({
   extended: true
 }));
 app.use(express.json());
+
+app.use(expressValidator());// better errors handling
 
 // app.use(myOwnMiddleware);
 // app.get("/", getPosts);
